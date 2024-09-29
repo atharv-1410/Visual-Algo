@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Visual Algo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full height of the viewport */
+        }
+
+        .header {
+            background: linear-gradient(90deg, #007bff, #6610f2);
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .journey-section {
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Added for better alignment */
+        }
+
+        .journey-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .photo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .photo-container {
+            width: 150px; /* Adjust size as necessary */
+            height: 150px; /* Adjust size as necessary */
+            border-radius: 50%; /* Round shape */
+            overflow: hidden; /* Ensures that the image fits within the circle */
+            border: 5px solid #007bff; /* Optional border for styling */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            transition: transform 0.3s ease;
+        }
+
+        .photo-container:hover {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the container */
+        }
+
+        .animated {
+            transition: transform 0.3s ease;
+        }
+
+        .animated:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .photo-description {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Aligns text with photo */
+        }
+
+        .photo-description p {
+            margin-left: 15px; /* Space between photo and description */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">Visual Algo</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="visualizer.html">Visualizer</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header class="header">
+            <h1>About Me</h1>
+            <p>Welcome to my journey of learning Data Structures and Algorithms (DSA)!</p>
+        </header>
+
+        <div class="container photo-section">
+            <div class="row align-items-center photo-description">
+                <div class="col-md-4 d-flex justify-content-center">
+                    <div class="photo-container">
+                        <img src="pic.jpg" alt="Atharv Deshpande">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p class="mt-2"><strong>Atharv Deshpande</strong>: A passionate learner and creator of interactive algorithm visualizations!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container journey-section animated">
+            <h2>My DSA Journey</h2>
+            <p>When I first started to learn DSA, it was quite difficult to understand. I struggled to grasp the concepts until I decided to draw each iteration on pen and paper. This hands-on approach helped me visualize the algorithms better and led me to create a visualization tool that enables users to easily visualize DSA concepts and gain a deeper understanding.</p>
+        </div>
+
+        <div class="container text-center mt-5">
+            <h2>Connect with Me</h2>
+            <p>Feel free to reach out if you want to collaborate or learn more!</p>
+            <a href="https://github.com/atharv-1410" class="btn btn-primary">GitHub</a>
+            <a href="https://www.linkedin.com/in/atharv-deshpande-a06391213/" class="btn btn-primary">LinkedIn</a>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 Visual Algo. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
