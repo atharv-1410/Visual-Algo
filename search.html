@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Algorithms - Visual Algo</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4cc9f0;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --secondary-light: #ff8fab;
+            --bg-light: #f8f9fa;
+            --bg-dark: #212529;
+            --text-dark: #212529;
+            --text-light: #f8f9fa;
+            --text-muted: #6c757d;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--text-light);
+            padding: 20px 0;
+            position: relative;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 0;
+            position: relative;
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        nav a:hover:after,
+        nav a.active:after {
+            width: 100%;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--text-light);
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .algorithm-tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .tab-btn:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active:after {
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f5f8ff;
+            border-radius: var(--border-radius);
+        }
+
+        .controls h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-light);
+        }
+
+        .btn-outline {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .visualization {
+            margin-top: 30px;
+        }
+
+        .array-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+            min-height: 150px;
+        }
+
+        .array-element {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.5s ease;
+        }
+
+        .array-element.current {
+            background-color: #ffd166;
+            transform: translateY(-10px);
+        }
+
+        .array-element.found {
+            background-color: #06d6a0;
+        }
+
+        .array-element.not-found {
+            background-color: #ef476f;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            background-color: #f8f9fa;
+            min-height: 60px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .legend-current {
+            background-color: #ffd166;
+        }
+
+        .legend-found {
+            background-color: #06d6a0;
+        }
+
+        .legend-not-found {
+            background-color: #ef476f;
+        }
+
+        .stats-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            background-color: #f0f7ff;
+        }
+
+        .explanation {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary);
+        }
+
+        .explanation h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .explanation ul {
+            margin-left: 20px;
+        }
+
+        .explanation li {
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--text-light);
+            padding: 50px 0 20px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-section {
+            flex: 1 0 250px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 50px;
+            background-color: var(--primary-light);
+        }
+
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contact span {
+            display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .socials a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .socials a:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .footer-section.links ul {
+            list-style: none;
+        }
+
+        .footer-section.links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section.links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section.links a:hover {
+            color: white;
+            margin-left: 5px;
+        }
+
+        .footer-section.newsletter input {
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: none;
+            width: 100%;
+        }
+
+        .footer-section.newsletter button {
+            background: var(--secondary);
+            transition: var(--transition);
+            border: none;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .footer-section.newsletter button:hover {
+            background: var(--secondary-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            padding-bottom: 20px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(45deg);
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .controls,
+        body.dark-mode .explanation,
+        body.dark-mode .result-container,
+        body.dark-mode .stats-container {
+            background-color: #2d3748;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .array-element {
+            background-color: #4a5568;
+            color: white;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+                box-shadow: var(--shadow-md);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .array-element {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .footer-section {
+                flex: 1 0 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-microchip fa-2x"></i>
+                <a href="index.html" class="logo-text">Visual Algo</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="algorithms.html" class="active">Algorithms</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Search Algorithms</h1>
+            <p class="subtitle">Interactive visualization of Linear Search and Binary Search algorithms. Understand how they work and compare their performance.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="card">
+            <div class="algorithm-tabs">
+                <button class="tab-btn active" data-tab="linear-search">Linear Search</button>
+                <button class="tab-btn" data-tab="binary-search">Binary Search</button>
+            </div>
+
+            <!-- Linear Search Tab -->
+            <div id="linear-search" class="tab-content active">
+                <div class="controls">
+                    <h3>Linear Search Controls</h3>
+                    <div class="input-group">
+                        <label for="linear-array">Enter array elements (comma separated)</label>
+                        <input type="text" id="linear-array" placeholder="Example: 5, 2, 8, 12, 3, 17, 9" value="5, 2, 8, 12, 3, 17, 9">
+                    </div>
+                    <div class="input-group">
+                        <label for="linear-target">Target value to search</label>
+                        <input type="number" id="linear-target" placeholder="Enter a number" value="12">
+                    </div>
+                    <div class="action-buttons">
+                        <button id="linear-start" class="btn">Start Search</button>
+                        <button id="linear-next" class="btn btn-secondary" disabled>Next Step</button>
+                        <button id="linear-reset" class="btn btn-outline">Reset</button>
+                    </div>
+                </div>
+
+                <div class="visualization">
+                    <h3>Visualization</h3>
+                    <div class="array-container" id="linear-array-container">
+                        <!-- Array elements will be added here by JavaScript -->
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color legend-current"></div>
+                            <span>Current Element</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-found"></div>
+                            <span>Found!</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-not-found"></div>
+                            <span>Not Found</span>
+                        </div>
+                    </div>
+                    <div class="result-container" id="linear-result">
+                        <!-- Results will be displayed here -->
+                    </div>
+                    <div class="stats-container" id="linear-stats">
+                        <h4>Statistics</h4>
+                        <p>Steps: <span id="linear-steps">0</span></p>
+                        <p>Comparisons: <span id="linear-comparisons">0</span></p>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h3>How Linear Search Works</h3>
+                    <p>Linear Search is the simplest search algorithm that works by sequentially checking each element of the list until a match is found or the whole list has been searched.</p>
+                    <p><strong>Steps:</strong></p>
+                    <ul>
+                        <li>Start from the leftmost element of the array and compare with the target one by one.</li>
+                        <li>If the element matches the target, return its index.</li>
+                        <li>If the element doesn't match, move to the next element.</li>
+                        <li>If no match is found after checking all elements, return -1 or indicate that the element is not present.</li>
+                    </ul>
+                    <p><strong>Time Complexity:</strong></p>
+                    <ul>
+                        <li>Best Case: O(1) - When the target is at the first position</li>
+                        <li>Average Case: O(n/2) - On average, need to search half the array</li>
+                        <li>Worst Case: O(n) - When the target is at the last position or not present</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Binary Search Tab -->
+            <div id="binary-search" class="tab-content">
+                <div class="controls">
+                    <h3>Binary Search Controls</h3>
+                    <div class="input-group">
+                        <label for="binary-array">Enter array elements (comma separated, will be sorted automatically)</label>
+                        <input type="text" id="binary-array" placeholder="Example: 5, 2, 8, 12, 3, 17, 9" value="5, 2, 8, 12, 3, 17, 9">
+                    </div>
+                    <div class="input-group">
+                        <label for="binary-target">Target value to search</label>
+                        <input type="number" id="binary-target" placeholder="Enter a number" value="12">
+                    </div>
+                    <div class="action-buttons">
+                        <button id="binary-start" class="btn">Start Search</button>
+                        <button id="binary-next" class="btn btn-secondary" disabled>Next Step</button>
+                        <button id="binary-reset" class="btn btn-outline">Reset</button>
+                    </div>
+                </div>
+
+                <div class="visualization">
+                    <h3>Visualization</h3>
+                    <div class="array-container" id="binary-array-container">
+                        <!-- Array elements will be added here by JavaScript -->
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color legend-current"></div>
+                            <span>Current (Middle) Element</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-found"></div>
+                            <span>Found!</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-not-found"></div>
+                            <span>Search Space Eliminated</span>
+                        </div>
+                    </div>
+                    <div class="result-container" id="binary-result">
+                        <!-- Results will be displayed here -->
+                    </div>
+                    <div class="stats-container" id="binary-stats">
+                        <h4>Statistics</h4>
+                        <p>Steps: <span id="binary-steps">0</span></p>
+                        <p>Comparisons: <span id="binary-comparisons">0</span></p>
+                        <p>Range: <span id="binary-range">N/A</span></p>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <h3>How Binary Search Works</h3>
+                    <p>Binary Search is an efficient algorithm for finding an item from a sorted list of items. It works by repeatedly dividing the search interval in half.</p>
+                    <p><strong>Steps:</strong></p>
+                    <ul>
+                        <li>Begin with the mid element of the whole array as a search key.</li>
+                        <li>If the value of the search key is equal to the target, we finish the search.</li>
+                        <li>If the value of the search key is less than the target, we search in the sub-array to the right of the search key.</li>
+                        <li>If the value of the search key is greater than the target, we search in the sub-array to the left of the search key.</li>
+                        <li>We repeat the process until we find the target or determine that the target doesn't exist in the array.</li>
+                    </ul>
+                    <p><strong>Time Complexity:</strong></p>
+                    <ul>
+                        <li>Best Case: O(1) - When the middle element is the target</li>
+                        <li>Average Case: O(log n) - Divide and conquer approach</li>
+                        <li>Worst Case: O(log n) - When the target is at an extreme end or not present</li>
+                    </ul>
+                    <p>Note: Binary Search requires the array to be sorted first.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>About This Tool</h3>
+                    <p>The Visual Algo helps students and professionals understand the behavior and performance of
+                        different algorithms through interactive visualization.</p>
+                    <div class="contact">
+                        <span><i class="fas fa-envelope"></i> &nbsp; atharvdeshpande92@gmail.com</span>
+                        <span><i class="fas fa-phone"></i> &nbsp; 9322784177</span>
+                    </div>
+                    <div class="socials">
+                        <a href="https://www.linkedin.com/in/atharv-deshpande-a06391213/"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/atharv-1410"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-angle-right"></i> Home</a></li>
+                        <li><a href="algorithms.html"><i class="fas fa-angle-right"></i> Algorithms</a></li>
+                        <li><a href="faq.html"><i class="fas fa-angle-right"></i> FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section newsletter">
+                    <h3>Subscribe to Updates</h3>
+                    <p>Get the latest updates on new features and educational content.</p>
+                    <form action="#" method="post">
+                        <input type="email" name="email" placeholder="Enter your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Visual Algo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="theme-toggle">
+        <button id="darkModeToggle">🌙</button>
+    </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

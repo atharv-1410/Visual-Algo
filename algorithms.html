@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Algo</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4cc9f0;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --secondary-light: #ff8fab;
+            --bg-light: #f8f9fa;
+            --bg-dark: #212529;
+            --text-dark: #212529;
+            --text-light: #f8f9fa;
+            --text-muted: #6c757d;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--text-light);
+            padding: 20px 0;
+            position: relative;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 0;
+            position: relative;
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        nav a:hover:after,
+        nav a.active:after {
+            width: 100%;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--text-light);
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .algo-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .algo-card {
+            flex: 1 0 300px;
+            max-width: 350px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .algo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .algo-card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--text-light);
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .algo-card-body {
+            padding: 20px;
+        }
+
+        .algo-card-body p {
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        h2,
+        h3 {
+            color: var(--primary-dark);
+            margin: 15px 0;
+            position: relative;
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--text-light);
+            padding: 50px 0 20px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-section {
+            flex: 1 0 250px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 50px;
+            background-color: var(--primary-light);
+        }
+
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contact span {
+            display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .socials {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .socials a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .socials a:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .footer-section.links ul {
+            list-style: none;
+        }
+
+        .footer-section.links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section.links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section.links a:hover {
+            color: white;
+            margin-left: 5px;
+        }
+
+        .footer-section.newsletter input {
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: none;
+            width: 100%;
+        }
+
+        .footer-section.newsletter button {
+            background: var(--secondary);
+            transition: var(--transition);
+            border: none;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .footer-section.newsletter button:hover {
+            background: var(--secondary-light);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            padding-bottom: 20px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(45deg);
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .algo-card {
+            background-color: #2d3748;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+                box-shadow: var(--shadow-md);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .footer-section {
+                flex: 1 0 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-microchip fa-2x"></i>
+                <a href="index.html" class="logo-text">Visual Algo</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="algorithms.html" class="active">Algorithms</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Visual Algo</h1>
+            <p class="subtitle">Experience the magic of algorithms! Dive into interactive visualizations that make
+                complex algorithms easy to understand. Transform your coding journey with engaging visuals.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="card">
+            <h2>Popular Algorithms</h2>
+            <div class="algo-cards">
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>First-Come, First-Served (FCFS)</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>FCFS is a non-preemptive scheduling algorithm that serves requests in the order they arrive.
+                        </p>
+                        <a href="https://www.geeksforgeeks.org/first-come-first-serve-cpu-scheduling-non-preemptive/"
+                            class="btn">Learn More</a>
+
+
+                        <a href="index.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Shortest Job First (SJF)</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>A non-preemptive scheduling algorithm that selects the process with the smallest burst time
+                            next.</p>
+                        <a href="https://www.geeksforgeeks.org/shortest-job-first-or-sjf-cpu-scheduling-non-preemptive-algorithm-using-segment-tree/"
+                            class="btn">Learn More</a>
+                            <a href="index.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Priority Scheduling</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Priority Scheduling assigns the CPU to processes based on priority; higher priorities are
+                            served first.</p>
+                        <a href="https://www.geeksforgeeks.org/priority-cpu-scheduling-with-different-arrival-time-set-2/"
+                            class="btn">Learn More</a>
+                            <a href="index.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="algo-cards mt-4">
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Round Robin</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Round Robin is a preemptive scheduling algorithm that assigns time slices to each process in
+                            a cyclic order.</p>
+                        <a href="https://www.geeksforgeeks.org/program-for-round-robin-scheduling-for-the-same-arrival-time/"
+                            class="btn">Learn More</a>
+                            <a href="index.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Selection Sort</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Selection Sort divides the input list into two parts: sorted and unsorted, and repeatedly
+                            selects the smallest element.</p>
+                        <a href="https://www.geeksforgeeks.org/selection-sort-algorithm-2/" class="btn">Learn More</a>
+                        <a href="ss.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Bubble Sort</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if
+                            they are in the wrong order.</p>
+                        <a href="https://www.geeksforgeeks.org/bubble-sort-algorithm/" class="btn">Learn More</a>
+                        <a href="ss.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="algo-cards mt-4">
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Insertion Sort</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Insertion Sort builds a sorted array one element at a time, inserting elements into their
+                            correct position.</p>
+                        <a href="https://www.geeksforgeeks.org/insertion-sort-algorithm/" class="btn">Learn More</a>
+                        <a href="ss.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Linear Search</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Linear Search scans each element in a list to find a target value, returning the index if
+                            found.</p>
+                        <a href="https://www.geeksforgeeks.org/linear-search/" class="btn">Learn More</a>
+                        <a href="search.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <div class="algo-card-header">
+                        <h3>Binary Search</h3>
+                    </div>
+                    <div class="algo-card-body">
+                        <p>Binary Search finds the position of a target value within a sorted array by repeatedly
+                            dividing the search interval in half.</p>
+                        <a href="https://www.geeksforgeeks.org/binary-search/" class="btn">Learn More</a>
+                        <a href="search.html" class="btn simulate-btn"
+                            style="margin-left: 10px; background-color: #2ecc71; color: white;">
+                            <i class="fas fa-play"></i> Simulate
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>About This Tool</h3>
+                    <p>The Visual Algo helps students and professionals understand the behavior and performance of
+                        different algorithms through interactive visualization.</p>
+                    <div class="contact">
+                        <span><i class="fas fa-envelope"></i> &nbsp; atharvdeshpande92@gmail.com</span>
+                        <span><i class="fas fa-phone"></i> &nbsp; 9322784177</span>
+                    </div>
+                    <div class="socials">
+                        <a href="https://www.linkedin.com/in/atharv-deshpande-a06391213/"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/atharv-1410"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-angle-right"></i> Home</a></li>
+                        <li><a href="algorithms.html"><i class="fas fa-angle-right"></i> Algorithms</a></li>
+                        <li><a href="faq.html"><i class="fas fa-angle-right"></i> FAQs</a></li>
+
+                    </ul>
+                </div>
+                <div class="footer-section newsletter">
+                    <h3>Subscribe to Updates</h3>
+                    <p>Get the latest updates on new features and educational content.</p>
+                    <form action="#" method="post">
+                        <input type="email" name="email" placeholder="Enter your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Visual Algo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="theme-toggle">
+        <button id="darkModeToggle">🌙</button>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function () {
+            document.querySelector('nav ul').classList.toggle('show');
+        });
+
+        // Dark mode toggle
+        document.addEventListener('DOMContentLoaded', function () {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+
+            // Check for saved theme preference
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+            // Set initial theme
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '☀️';
+            } else {
+                darkModeToggle.innerHTML = '🌙';
+            }
+
+            // Toggle theme on button click
+            darkModeToggle.addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+
+                const isDarkModeNow = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkModeNow);
+
+                // Update button icon
+                darkModeToggle.innerHTML = isDarkModeNow ? '☀️' : '🌙';
+            });
+        });
+    </script>
+</body>
+
+</html>
